@@ -8,7 +8,7 @@ using TMPro;
 public class MenuHandler : MonoBehaviour
 {
     //public InputField nameField;
-    public string playerName = "test";
+    public string playerName = "";
     public TMP_InputField inputField;
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,14 @@ public class MenuHandler : MonoBehaviour
     }
     public void StartGame()
     {
-        SceneManager.LoadScene(1);
+        if(playerName.Length > 0)
+        {
+            SceneManager.LoadScene(1);
+        }
+        else
+        {
+            Debug.Log("Enter a username!");
+        }
     }
 
     public void ReadStringInput()

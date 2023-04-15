@@ -5,7 +5,7 @@ using System.IO;
 
 public class GameInstance : MonoBehaviour
 {
-    public string playerName;
+    public string playerName = "";
     public string highScorePlayer;
     public int highScore;
 
