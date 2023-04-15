@@ -11,17 +11,34 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text highScore;
+    public string highScorePlayer;
     public GameObject GameOverText;
     
     private bool m_Started = false;
     private int m_Points;
+    private int hs_Points;
     
     private bool m_GameOver = false;
 
+    public static GameInstance gameInstance;
+    public string playerName;
+
+    private void Awake()
+    {
+
+    }
     
+
     // Start is called before the first frame update
     void Start()
     {
+        playerName = GameInstance.gameInstance.playerName;
+        hs_Points = GameInstance.gameInstance.highScore;
+        highScorePlayer = GameInstance.gameInstance.highScorePlayer;
+        highScore.text = $"Best Score: {hs_Points} Player: {highScorePlayer}";
+
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -58,6 +75,7 @@ public class MainManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                
             }
         }
     }
@@ -65,12 +83,29 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"{playerName} Score : {m_Points}";
+        if(m_Points > hs_Points)
+        {
+            hs_Points = m_Points;
+            highScorePlayer = playerName;
+            highScore.text = $"Best Score: {hs_Points} Player: {playerName}";
+        }
     }
+
+    
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        if(m_Points > GameInstance.gameInstance.highScore)
+        {
+            GameInstance.gameInstance.SaveGame(m_Points);
+            highScore.text = $"Best Score: {hs_Points} Player: {highScorePlayer}";
+        }
     }
+
+    
+        
 }
